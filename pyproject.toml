@@ -1,0 +1,19 @@
+[project]
+name = "supervisor-modbus"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Ricardo Racki",email = "ricardo_racki@hotmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pymodbus (>=3.11.4,<4.0.0)",
+    "psycopg2 (>=2.9.11,<3.0.0)",
+    "asyncpg (>=0.31.0,<0.32.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

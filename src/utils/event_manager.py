@@ -8,11 +8,11 @@ class EventManager():
         else:
             self.events[event] = [callback]
         return self
-    
-    def dispatch(self, event, *args, **kwargs):
+
+    async def dispatch(self, event, *args, **kwargs):
         if event in self.events:
             for callback in self.events[event]:
-                callback(*args, **kwargs)
+                await callback(*args, **kwargs)
 
     def has(self, event):
         return event in self.events
