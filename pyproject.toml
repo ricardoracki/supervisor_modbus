@@ -18,8 +18,8 @@ dependencies = [
 
 [tool.taskipy.tasks]
 dev = 'poetry run python run.py'
-clear = 'rd /s /q dist build data *.spec'
-build = 'poetry run python build_exe.py &&  cp ./config/settings.toml ./dist/config/settings.toml'
+clear = 'rd /s /q dist build'
+build = 'poetry run python build_exe.py &&  copy ./config/settings.toml ./dist/config/settings.toml'
 docker = "docker compose up -d"
 
 [build-system]

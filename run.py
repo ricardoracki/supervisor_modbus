@@ -64,7 +64,7 @@ def main():
         api_process.join()
 
     except KeyboardInterrupt:
-        logger.info("Encerrando sistema (Ctrl+C detectado)...")
+        logger.error("Encerrando sistema (Ctrl+C detectado)...")
         modbus_process.terminate()
         api_process.terminate()
         modbus_process.join()

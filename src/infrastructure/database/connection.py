@@ -1,10 +1,10 @@
-import os
 from src.core.logger import get_logger
 import asyncpg
+from src.core.config import settings
 
 
 logger = get_logger(__name__)
-DATABASE_URL = os.environ.get('DATABASE_URL', None)
+DATABASE_URL = settings['global']['DATABASE_URL']
 
 if not DATABASE_URL:
     raise ValueError("A variável de ambiente DATABASE_URL deve ser definida.")

@@ -1,5 +1,4 @@
 import PyInstaller.__main__
-import os
 
 # Define o nome do executável final
 exe_name = "SupervisorIndustrial"
