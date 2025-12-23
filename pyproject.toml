@@ -6,7 +6,7 @@ authors = [
     {name = "Ricardo Racki",email = "ricardo_racki@hotmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.15"
 dependencies = [
     "pymodbus (>=3.11.4,<4.0.0)",
     "psycopg2 (>=2.9.11,<3.0.0)",
@@ -16,7 +16,18 @@ dependencies = [
     "toml (>=0.10.2,<0.11.0)"
 ]
 
+[tool.taskipy.tasks]
+dev = 'poetry run python run.py'
+clear = 'rd /s /q dist build data *.spec'
+build = 'poetry run python build_exe.py &&  cp ./config/settings.toml ./dist/config/settings.toml'
+docker = "docker compose up -d"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pyinstaller (>=6.17.0,<7.0.0)",
+    "taskipy (>=1.14.1,<2.0.0)"
+]

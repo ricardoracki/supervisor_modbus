@@ -3,21 +3,15 @@ import sys
 import toml
 from pathlib import Path
 from src.core.logger import get_logger
+from src.config.settings import CONFIG_PATH
 
 logger = get_logger(__name__)
 
 
 class Settings:
     def __init__(self):
-        # Detecta se está rodando como script ou como executável congelado
-        if getattr(sys, 'frozen', False):
-            # Caminho onde o arquivo .exe está localizado
-            base_dir = Path(sys.executable).parent
-        else:
-            # Caminho do script em desenvolvimento
-            base_dir = Path(__file__).parent.parent.parent
 
-        config_path = base_dir / "config" / "settings.toml"
+        config_path = CONFIG_PATH / "settings.toml"
 
         if not config_path.exists():
             logger.error(
@@ -28,3 +22,6 @@ class Settings:
 
     def __getitem__(self, name: str):
         return self._data[name]
+
+
+settings = Settings()

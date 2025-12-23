@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from .connection import get_pool
+from src.infrastructure.database.connection import get_pool
 from src.core.logger import get_logger
 
 from src.core.types.ModbusReadPayload import ModbusReadPayload
