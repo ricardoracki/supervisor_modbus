@@ -1,0 +1,9 @@
+GET http://localhost:8000/api/v1/health
+
+
+###
+GET http://localhost:8000/api/v1/pesagens
+
+
+###
+GET http://localhost:8000/api/v1/pesagens?maquina_id=1&data=2025-12-23&classificacao=3

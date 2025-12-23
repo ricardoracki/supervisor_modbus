@@ -1,6 +1,6 @@
 import asyncio
 from src.core.buffer import Buffer
-from src.infrastructure.database.repositories import PesagemRepository
+from src.infrastructure.database.repositories import PesagemRepository, EventRepository
 from src.infrastructure.database.connection import get_pool, close_pool
 from src.services.workers import weight_worker
 from src.infrastructure.CW import CheckWeigher
@@ -9,20 +9,28 @@ from src.core.logger import get_logger
 logger = get_logger(__name__)
 
 
-async def shutdown(loop, signal=None):
-    """Fecha as tarefas e conexões de forma limpa (Graceful Shutdown)."""
-    if signal:
-        logger.info(f"Recebido sinal de parada: {signal.name}")
+async def shutdown(loop):
+    """Fecha as tarefas e conexões de forma limpa."""
+    logger.info("Iniciando processo de shutdown...")
 
+    # 1. Captura todas as tarefas, exceto a atual (que é o próprio shutdown)
     tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
-    for task in tasks:
-        task.cancel()
 
-    logger.info(f"Cancelando {len(tasks)} tarefas pendentes...")
-    await asyncio.gather(*tasks, return_exceptions=True)
+    if tasks:
+        logger.info(f"Cancelando {len(tasks)} tarefas pendentes...")
+        for task in tasks:
+            task.cancel()
 
+        # 2. Aguarda o cancelamento de todas as tarefas
+        # return_exceptions=True evita que o shutdown quebre se uma task demorar a cancelar
+        await asyncio.gather(*tasks, return_exceptions=True)
+
+    # 3. Fecha conexões críticas
+    logger.info("Fechando pool de conexões com o banco...")
     await close_pool()
-    loop.stop()
+
+    # NOTA: Removido o loop.stop() para não conflitar com o asyncio.run()
+    logger.info("Shutdown finalizado com sucesso.")
 
 
 async def main():
@@ -35,6 +43,7 @@ async def main():
     # 2. Inicializa o Pool de Conexões e o Banco de Dados
     await get_pool()
     await PesagemRepository.initialize()
+    await EventRepository.initialize()
 
     # 3. Cria as Tarefas (Tasks)
     # Task do Worker: Consome do Buffer -> Banco
@@ -66,6 +75,10 @@ async def main():
 
     except Exception as e:
         logger.exception(e)
+
+    finally:
+        await shutdown(loop)
+
 
 if __name__ == "__main__":
     try:

@@ -30,7 +30,7 @@ def get_logger(name: str = "app") -> logging.Logger:
     )
 
     console_formatter = logging.Formatter(
-        "[%(levelname)s] %(message)s"
+        f"[%(asctime)s][%(levelname)s] - %(message)s"
     )
 
     # ================== FILE HANDLER ==================
