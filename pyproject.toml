@@ -19,8 +19,9 @@ dependencies = [
 [tool.taskipy.tasks]
 dev = 'poetry run python run.py'
 clear = 'rd /s /q dist build'
-build = 'poetry run python build_exe.py &&  copy ./config/settings.toml ./dist/config/settings.toml'
+build = 'poetry run python build_exe.py && mkdir .\\dist\\config 2>nul & copy /Y .\\config\\settings.toml .\\dist\\config\\settings.toml'
 docker = "docker compose up -d"
+copy_config = "mkdir .\\dist\\config 2>nul & copy /Y .\\config\\settings.toml .\\dist\\config\\settings.toml"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
