@@ -1,5 +1,5 @@
 [project]
-name = "supervisor-modbus"
+name = "service"
 version = "0.1.0"
 description = ""
 authors = [
@@ -13,7 +13,8 @@ dependencies = [
     "asyncpg (>=0.31.0,<0.32.0)",
     "fastapi (>=0.127.0,<0.128.0)",
     "uvicorn (>=0.40.0,<0.41.0)",
-    "toml (>=0.10.2,<0.11.0)"
+    "toml (>=0.10.2,<0.11.0)",
+    "types-toml (>=0.10.8.20240310,<0.11.0.0)"
 ]
 
 [tool.taskipy.tasks]

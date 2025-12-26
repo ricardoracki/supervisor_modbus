@@ -5,6 +5,7 @@ from src.infrastructure.database.connection import get_pool, close_pool
 from src.services.workers import weight_worker
 from src.infrastructure.CW import CheckWeigher
 from src.core.logger import get_logger
+from src.core.config import settings
 
 logger = get_logger(__name__)
 
@@ -55,14 +56,8 @@ async def main():
     # Task do Reader: Modbus -> Buffer
     # Supondo que sua função modbus_reader receba o buffer
     # criar instancias do cw
-    cw1 = CheckWeigher(name='CW1', ip_address='192.168.1.70',
-                       port=502, cw_id='1')
-
-    cw1.on(CheckWeigher.eventTypes.WEIGHT_READ, buffer.put)
-
-    cws = [cw1]
     tasks = [asyncio.create_task(
-        cw.listener(), name=f"{cw.name} listener") for cw in cws]
+        cw.listener(), name=f"{cw.name} listener") for cw in settings.cws]
 
     # 4. Monitoramento e Graceful Shutdown
     loop = asyncio.get_running_loop()
